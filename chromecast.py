@@ -13,6 +13,7 @@ import zeroconf
 import urllib.parse
 
 def say(cast, phrase, ttsip):
+    logging.info('starting the loop')
     chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=[cast])
     if not chromecasts:
         chromecasts, browser = pychromecast.get_chromecasts()
@@ -37,9 +38,9 @@ def say(cast, phrase, ttsip):
         try:
             if player_state != cast.media_controller.status.player_state:
                 player_state = cast.media_controller.status.player_state
-                logging.info("Player state:", player_state)
+                logging.info("Player state:" + player_state)
             if player_state == "PLAYING":
-                sys.exit(0)
+                break
             if cast.socket_client.is_connected and has_played and player_state != "PLAYING":
                 has_played = False
                 cast.media_controller.play_media(url)

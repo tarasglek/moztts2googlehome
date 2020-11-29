@@ -13,6 +13,26 @@ from TTS.utils.text.symbols import symbols, phonemes
 from TTS.utils.audio import AudioProcessor
 from TTS.utils.synthesis import synthesis
 from TTS.vocoder.utils.generic_utils import setup_generator
+import chromecast
+import logging
+from logging.config import dictConfig
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://sys.stdout',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
+
 
 _DIR = Path(__file__).parent
 
@@ -122,7 +142,6 @@ def api_chromecast():
     text = request.args.get("text", "").strip()
     myip = request.args.get("myip", "").strip()
     cast = request.args.get("chromecast", "").strip()
-    import chromecast
     chromecast.say(cast, text, myip)
     return "Said it"
 
