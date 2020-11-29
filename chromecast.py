@@ -27,7 +27,7 @@ def say(cast, phrase, ttsip):
             cast, phrase
         )
     )
-    url = f"http://192.168.1.205:5002/api/tts?text={urllib.parse.quote_plus(phrase)}."
+    url = f"http://{ttsip}:5002/api/tts?text={urllib.parse.quote_plus(phrase)}."
     cast.media_controller.play_media(url, "audio/wav")
 
     player_state = None
